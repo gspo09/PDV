@@ -47,11 +47,7 @@ public class EditarProdutoActivity extends BaseActivity {
         List<String> barcodeList = new ArrayList<>();
         List<produto> produtoList;
 
-
-        CursorList cursor = Query.many(produto.class, "select * from produto where ativo = 0").get();
-        produtoList = cursor.asList();
-
-        for (produto produto : produtoList) {
+        for (produto produto : produtos) {
             barcodeList.add(produto.getCodigoBarra());
         }
 
@@ -63,14 +59,12 @@ public class EditarProdutoActivity extends BaseActivity {
 
         spinner.setAdapter(dataAdapter);
 
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String barCode = parent.getItemAtPosition(position).toString();
 
                 Log.d("BARCODE", "selecionado -->" +barCode);
-
             }
 
             @Override
