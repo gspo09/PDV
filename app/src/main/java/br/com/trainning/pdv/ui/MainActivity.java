@@ -1,15 +1,24 @@
-package br.com.trainning.pdv;
+package br.com.trainning.pdv.ui;
 
+import android.app.DownloadManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+import br.com.trainning.pdv.R;
+import br.com.trainning.pdv.domain.model.produto;
+import se.emilsjolander.sprinkles.Query;
+
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
     }
 
     @Override
@@ -43,10 +53,35 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_novo) {
+            Intent intent = new Intent(MainActivity.this,CadastroNovoActivity.class);
+            startActivity(intent);
+            Log.d("MainActivity","Selecionou novo produto");
+            return true;
+
+        }else if(id==R.id.action_edit){
+            Intent telaEditarIntent = new Intent(MainActivity.this,EditarProdutoActivity.class);
+            startActivity(telaEditarIntent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        List<produto> produtos = Query.all(produto.class).get().asList();
+        if(produtos!=null) {
+            for (produto p : produtos) {
+                Log.d("produto", "id------------->" + p.getId());
+                Log.d("produto", "descricao------>" + p.getDescricao());
+                Log.d("produto", "unidade-------->" + p.getUnidade());
+                Log.d("produto", "codigo barras-->" + p.getCodigoBarra());
+                Log.d("produto", "preco---------->" + p.getPreco());
+                Log.d("produto", "foto----------->" + p.getFoto());
+                Log.d("produto", "-----------------------------------");
+
+            }
+        }
     }
 }
